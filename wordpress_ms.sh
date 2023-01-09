@@ -53,7 +53,7 @@ cat wp-content/themes/*/functions.php >> malwarescan.txt
 echo "===== Content of index.php, index.html, .htaccess, header.php, footer.php, functions.php is stored in  /home/master/applications/$answer/public_html/malwarescan.txt for manual review."
 # Completed checking index.*, .htaccess files
 # Checking uploads folder
-echo "Checking uploads folder..."
+echo "Checking uploads folder for files containing 'base64_decode' string which might be malware indicator..."
 
 # NEEDS FIXING
 # Set the flag to 0
