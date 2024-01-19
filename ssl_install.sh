@@ -27,7 +27,7 @@
 log_file="letsencrypt.log"
 
 # Define admin email address
-admin_email="admin@postmarketpublishing.com"
+admin_email=""
 
 # Check if the domains.txt file exists
 if [ ! -f "domains.txt" ]; then
@@ -67,7 +67,7 @@ while IFS= read -r domain; do
 done < "domains.txt"
 
 
-# Restart your web server (e.g., Apache or Nginx) to apply the changes.
+# Restart web server (e.g., Apache or Nginx) to apply the changes.
 # For Apache:
 systemctl restart apache2
 # For Nginx:
