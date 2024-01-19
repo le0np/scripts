@@ -6,4 +6,6 @@
 
 **new_log_check.sh** This script extracts and analyzes GET and POST requests from a log file, checking for potential SQL injection. The comments provide a step-by-step explanation of each section of the script.
 
-**wp_install.sh** This script reads domain names from the 'domains.txt' file, attempting to install a default WordPress website for each domain and provides login details in terminal
+**wp_install.sh** This script reads domain names from the 'domains.txt' file, attempting to install a default WordPress website for each domain and providing login details in the terminal (Ubuntu and Plesk Obsidian).
+
+**ssl_install.sh** This  script automates the installation of Let's Encrypt SSL certificates for domains specified in the 'domains.txt' file (Plesk Obsidian).
