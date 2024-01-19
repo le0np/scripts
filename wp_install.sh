@@ -16,8 +16,6 @@
 # DATE: [Current Date]
 
 
-#!/bin/bash
-
 # Check if wp-cli is already installed
 if command -v wp &> /dev/null; then
     echo -e "wp-cli is already installed.\n"
