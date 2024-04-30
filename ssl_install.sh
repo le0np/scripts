@@ -49,15 +49,15 @@ while IFS= read -r domain; do
    case "$ssl_option" in
       1)
          # Request certificate for domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "$domain" -m "$admin_email" > "$log_file" 2>&1
+         plesk bin extension --exec letsencrypt cli.php -d "$domain" -m "$admin_email" >> "$log_file" 2>&1
          ;;
       2)
          # Request certificate for www.domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" > "$log_file" 2>&1
+         plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1
          ;;
       3)
          # Request certificates for both www.domain.com and domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" > "$log_file" 2>&1
+         plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1
          ;;
       *)
          echo "Invalid input. Please enter 1, 2, or 3."
