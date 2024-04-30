@@ -12,8 +12,8 @@
 # NOTE: This script assumes that 'wp-cli' and 'php-mysql' are not already installed, and it uses 'domains.txt' for domain names.
 # Adjustments may be needed based on specific server configurations and requirements.
 #
-# AUTHOR: [Your Name]
-# DATE: [Current Date]
+# AUTHOR: le0np
+# DATE: 30/04/2024
 
 
 # Check if wp-cli is already installed
