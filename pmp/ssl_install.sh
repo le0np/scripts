@@ -27,7 +27,7 @@
 log_file="letsencrypt.log"
 
 # Define admin email address
-admin_email=""
+read -p "Enter email address for SSL: " admin_email
 
 # Check if the domains.txt file exists
 if [ ! -f "domains.txt" ]; then
