@@ -73,7 +73,7 @@ for domain in $(cat "$domains"); do
   mysql -e "CREATE DATABASE IF NOT EXISTS \`$db_name\`; GRANT ALL ON \`$db_name\`.* TO '$db_user'@'$db_host' IDENTIFIED BY '$db_password'; FLUSH PRIVILEGES;" | tee -a credentials.txt
 
   # Create website subscription
-  admin_user="admin_$random_string"
+  admin_user="pmp_admin_$random_string"
   admin_pass=$(tr -dc 'a-zA-Z0-9!@#$%^&*()_+-[]{}|;:,.<>?/' </dev/urandom | head -c 16)
   title="${domain%%.*}"
   email="info@$domain"
