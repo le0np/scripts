@@ -22,12 +22,14 @@
 # AUTHOR: le0np
 # DATE: 19/01/2024
 
-
 # Define a log file to capture the output
 log_file="letsencrypt.log"
 
 # Define admin email address
-read -p "Enter email address for SSL: " admin_email
+read -p "Enter email for SSL: " admin_email
+
+# Clear letsencrypt.log 
+echo > $log_file
 
 # Check if the domains.txt file exists
 if [ ! -f "domains.txt" ]; then
@@ -49,15 +51,27 @@ while IFS= read -r domain; do
    case "$ssl_option" in
       1)
          # Request certificate for domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "$domain" -m "$admin_email" >> "$log_file" 2>&1
+         if plesk bin extension --exec letsencrypt cli.php -d "$domain" -m "$admin_email" >> "$log_file" 2>&1; then
+            echo "SSL successfully installed for $domain" >> "$log_file"
+         else
+            echo "Failed to install SSL for $domain" >> "$log_file"
+         fi
          ;;
       2)
          # Request certificate for www.domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1
+         if plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
+            echo "SSL successfully installed for www.$domain" >> "$log_file"
+         else
+            echo "Failed to install SSL for www.$domain" >> "$log_file"
+         fi
          ;;
       3)
          # Request certificates for both www.domain.com and domain.com
-         plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1
+         if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
+            echo "SSL successfully installed for $domain and www.$domain" >> "$log_file"
+         else
+            echo "Failed to install SSL for $domain and www.$domain" >> "$log_file"
+         fi
          ;;
       *)
          echo "Invalid input. Please enter 1, 2, or 3."
@@ -66,8 +80,7 @@ while IFS= read -r domain; do
    esac
 done < "domains.txt"
 
-
-# Restart web server (e.g., Apache or Nginx) to apply the changes.
+# Restart your web server (e.g., Apache or Nginx) to apply the changes.
 # For Apache:
 systemctl restart apache2
 # For Nginx:
