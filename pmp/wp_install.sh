@@ -15,13 +15,16 @@
 # AUTHOR: le0np
 # DATE: 30/04/2024
 
+# Update pachakes 
+apt update -y && apt upgrade
+
+
 # Check if PHP-CLI is already installed
 if command -v php &> /dev/null; then
     echo -e "PHP-CLI is already installed.\n"
 else
     # Install PHP 7.4 CLI
     echo "Installing PHP-CLI ....."
-    apt update | tee -a credentials.txt
     apt install php7.4-cli -y | tee -a credentials.txt
 fi
 
