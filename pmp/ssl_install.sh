@@ -29,11 +29,11 @@ log_file="letsencrypt.log"
 read -p "Enter email for SSL: " admin_email
 
 # Clear letsencrypt.log 
-echo > $log_file
+echo "" > $log_file
 
 # Check if the domains.txt file exists
 if [ ! -f "domains.txt" ]; then
-   echo "domains.txt file not found."
+   echo "domains.txt file not found." | tee -a "$log_file"
    exit 1
 fi
 
@@ -46,35 +46,35 @@ read -r ssl_option
 
 # Loop through the domains in domains.txt and request Let's Encrypt certificates based on user input
 while IFS= read -r domain; do
-   echo "Requesting certificate for $domain..."
+   echo "Requesting certificate for $domain..." | tee -a "$log_file"
    
    case "$ssl_option" in
       1)
          # Request certificate for domain.com
          if plesk bin extension --exec letsencrypt cli.php -d "$domain" -m "$admin_email" >> "$log_file" 2>&1; then
-            echo "SSL successfully installed for $domain" >> "$log_file"
+            echo "SSL successfully installed for $domain" | tee -a "$log_file"
          else
-            echo "Failed to install SSL for $domain" >> "$log_file"
+            echo "Failed to install SSL for $domain" | tee -a "$log_file"
          fi
          ;;
       2)
          # Request certificate for www.domain.com
          if plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
-            echo "SSL successfully installed for www.$domain" >> "$log_file"
+            echo "SSL successfully installed for www.$domain" | tee -a "$log_file"
          else
-            echo "Failed to install SSL for www.$domain" >> "$log_file"
+            echo "Failed to install SSL for www.$domain" | tee -a "$log_file"
          fi
          ;;
       3)
          # Request certificates for both www.domain.com and domain.com
          if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
-            echo "SSL successfully installed for $domain and www.$domain" >> "$log_file"
+            echo "SSL successfully installed for $domain and www.$domain" | tee -a "$log_file"
          else
-            echo "Failed to install SSL for $domain and www.$domain" >> "$log_file"
+            echo "Failed to install SSL for $domain and www.$domain" | tee -a "$log_file"
          fi
          ;;
       *)
-         echo "Invalid input. Please enter 1, 2, or 3."
+         echo "Invalid input. Please enter 1, 2, or 3." | tee -a "$log_file"
          exit 1
          ;;
    esac
@@ -85,3 +85,5 @@ done < "domains.txt"
 systemctl restart apache2
 # For Nginx:
 systemctl restart nginx
+
+# Add logging 
