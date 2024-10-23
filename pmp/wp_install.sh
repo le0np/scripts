@@ -77,7 +77,7 @@ for domain in $(cat "$domains"); do
 
   # Create website subscription
   admin_user="pmp_admin_$random_string"
-  admin_pass=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9!@$%^&*()_+-[]{}|;:,.<>?/' | head -c 16)
+  admin_pass=$(tr -dc 'A-Za-z0-9!"#$%&()*+,-./:;<>?@[\\]^_`{|}~' < /dev/urandom | head -c 16)
   title="${domain%%.*}"
   email="info@$domain"
   service_plan="Default Domain"
