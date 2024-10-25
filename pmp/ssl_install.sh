@@ -62,7 +62,7 @@ while IFS= read -r domain; do
          if plesk bin extension --exec letsencrypt cli.php -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
             echo "SSL successfully installed for www.$domain" | tee -a "$log_file"
          else
-            echo "Failed to install SSL for www.$domain" | tee -a "$log_file"
+            echo "FAILED TO INSTALL SSL FOR www.$domain" | tee -a "$log_file"
          fi
          ;;
       3)
@@ -70,7 +70,7 @@ while IFS= read -r domain; do
          if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$admin_email" >> "$log_file" 2>&1; then
             echo "SSL successfully installed for $domain and www.$domain" | tee -a "$log_file"
          else
-            echo "Failed to install SSL for $domain and www.$domain" | tee -a "$log_file"
+            echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$log_file"
          fi
          ;;
       *)
