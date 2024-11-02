@@ -15,8 +15,8 @@
 # AUTHOR: le0np
 # DATE: 30/04/2024
 
-# Update pachakes 
-apt update -y && apt upgrade
+# Update packages 
+apt update -y && apt upgrade -y
 
 
 # Check if PHP-CLI is already installed
