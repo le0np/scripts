@@ -9,3 +9,5 @@
 **wp_install.sh** This script reads domain names from the 'domains.txt' file, attempting to install a default WordPress website for each domain and providing login details in the terminal (Ubuntu and Plesk Obsidian).
 
 **ssl_install.sh** This  script automates the installation of Let's Encrypt SSL certificates for domains specified in the 'domains.txt' file (Plesk Obsidian).
+
+**dns.sh** This script uses the dig command to retrieve DNS records for a specified domain, displaying NS, A, MX, CNAME, TXT, SOA and CAA records. 
