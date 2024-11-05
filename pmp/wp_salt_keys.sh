@@ -77,7 +77,7 @@ echo "File system repair has been executed."
 #read -p "Do you want to delete wp-config-sample.php and wp-config.php.bak (yes/no): " confirm
 #if [[ "$confirm" =~ ^[Yy][Ee][Ss]|[Yy]$ ]]; then
 find /var/www/vhosts/ -type f -name wp-config-sample.php -exec rm {} \;
-find /var/www/vhosts/ -type f -name wp-config-sample.php -exec rm {} \;
+find /var/www/vhosts/ -type f -name wp-config.php.bak -exec rm {} \;
 echo "Config files have been removed."
 # else
 #  echo "Config files have not been removed."
