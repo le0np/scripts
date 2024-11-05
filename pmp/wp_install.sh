@@ -82,6 +82,7 @@ for domain in $(cat "$domains"); do
   email="info@$domain"
   service_plan="Default Domain"
   create_output=$(plesk bin subscription --create $domain -service-plan "$service_plan" -ip "$ip" -login "$admin_user" -passwd "$admin_pass" 2>&1)
+  # theme= DOPUNI OVO
 
   # Check if domain creation succeeded
   if [[ "$create_output" == *"SUCCESS"* ]]; then
@@ -96,6 +97,9 @@ for domain in $(cat "$domains"); do
       # Install WordPress
       wp core install --path="/var/www/vhosts/$domain/httpdocs/" --url="https://$domain" --title="$title" --admin_user="$admin_user" --admin_password="$admin_pass" --admin_email="$email" --allow-root | tee -a credentials.txt
 
+      # Install the theme (replace 'theme-slug' with the actual slug of the theme)
+      #wp theme install $theme --path="/var/www/vhosts/$domain/httpdocs/" --activate --allow-root
+      
       # Update file ownership
       chown -R $admin_user: /var/www/vhosts/$domain/httpdocs/
       chown $admin_user:psaserv /var/www/vhosts/$domain/httpdocs/
