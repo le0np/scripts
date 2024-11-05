@@ -65,13 +65,13 @@ done < "$domains_file"
 echo "All wp-config.php files have been updated."
 
 # Prompt user for file system repair
-read -p "Do you want to run file system repair for websites? (yes/no): " confirm
-if [[ "$confirm" =~ ^[Yy][Ee][Ss]|[Yy]$ ]]; then
-  plesk repair fs -vhosts -verbose -y
-  echo "File system repair has been executed."
-else
-  echo "File system repair has been skipped."
-fi
+#read -p "Do you want to run file system repair for websites? (yes/no): " confirm
+#if [[ "$confirm" =~ ^[Yy][Ee][Ss]|[Yy]$ ]]; then
+plesk repair fs -vhosts -verbose -y
+echo "File system repair has been executed."
+#else
+#echo "File system repair has been skipped."
+#fi
 
 # Prompt user to delete sample and backup config file
 read -p "Do you want to delete wp-config-sample.php and wp-config.php.bak (yes/no): " confirm
