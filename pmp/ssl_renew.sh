@@ -15,20 +15,20 @@ for domain_path in /var/www/vhosts/*; do
     fi
 
     # Log the domain being processed
-    echo "Processing $domain" >> letsencrypt.log
+    echo "Processing $domain" | tee -a letsencrypt.log
 
     # Run the Plesk Let's Encrypt command for the domain and its www subdomain
     output=$(plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m leon@postmarketpublishing.com --renew 2>&1)
 
     if [ $? -eq 0 ]; then
         # Log success
-        echo "Successfully renewed certificate for $domain" >> letsencrypt.log
+        echo "Successfully renewed certificate for $domain" | tee -a letsencrypt.log
     else
         # Log failure with actual error message
-        echo "Failed to renew certificate for $domain" >> letsencrypt.log
-        echo "Error details: $output" >> letsencrypt.log
+        echo "Failed to renew certificate for $domain" | tee -a letsencrypt.log
+        echo "Error details: $output" | tee -a letsencrypt.log
     fi
 done
 
 # Log end time
-echo "Let's Encrypt renewal completed: $(date)" >> letsencrypt.log
+echo "Let's Encrypt renewal completed: $(date)" | tee -a letsencrypt.log
