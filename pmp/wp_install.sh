@@ -49,20 +49,15 @@ else
     echo -e "php-mysql is already installed.\n" | tee -a credentials.txt
 fi
 
-# Add domains names in a file domains.txt
+# Assign domains file
 domains="domains.txt"
+letsencrypt_log="letsencrypt.log"
 
-# Assign the IP address 
+# Assign IP address 
 ip=$(hostname -I | awk '{print $1}')
 
-# Define the database host and root password
+# Database and SSL configurations
 db_host="localhost"
-#read -p "Enter root password for database: " root_password
-
-# Add letsencrypt.log file
-letsencrpt_log="letsencrypt.log" 
-
-# Adnin email
 read -p "Enter email for SSL install: " ssl_email
 
 # Create or clear the credentials.txt file
