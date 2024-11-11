@@ -59,6 +59,12 @@ ip=$(hostname -I | awk '{print $1}')
 db_host="localhost"
 #read -p "Enter root password for database: " root_password
 
+# Add letsencrypt.log file
+letsencrpt_log="letsencrypt.log" 
+
+# Adnin email
+read -p "Enter email for SSL install: " ssl_email
+
 # Create or clear the credentials.txt file
 > credentials.txt
 
@@ -99,6 +105,13 @@ for domain in $(cat "$domains"); do
 
       # Install the theme (replace 'theme-slug' with the actual slug of the theme)
       #wp theme install $theme --path="/var/www/vhosts/$domain/httpdocs/" --activate --allow-root
+
+      # Install SSL certificate on www and non-www domain
+      if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrpt_log" 2>&1; then
+        echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrpt_log"
+      else
+        echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$letsencrpt_log"
+      fi
       
       # Update file ownership
       chown -R $admin_user: /var/www/vhosts/$domain/httpdocs/
