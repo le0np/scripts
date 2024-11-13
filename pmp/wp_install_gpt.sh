@@ -121,11 +121,32 @@ for domain in $(cat "$domains"); do
 
       # Install SSL certificate on www and non-www domain
       if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrypt_log" 2>&1; then
+        # Increment the counter for successful SSL installations
+        ssl_install_count=$((ssl_install_count + 1))
+        
         echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrypt_log"
         echo ""
+        
+        # Check if SSL installation count reached 100
+        if [[ $ssl_install_count -ge 100 ]]; then
+          echo "Reached 100 SSL installations. Restarting Apache and Nginx services..." | tee -a "$letsencrypt_log"
+          
+          # Reset Apache and Nginx services
+          systemctl restart apache2
+          systemctl restart nginx
+          
+          # Reset the counter
+          ssl_install_count=0
+        fi
       else
         echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$letsencrypt_log"
         echo ""
+        
+        # Restart services on first failure
+        echo "Restarting Apache and Nginx due to SSL installation failure..." | tee -a "$letsencrypt_log"
+        systemctl restart apache2
+        systemctl restart nginx
+        ssl_install_count=0  # Reset the counter on failure
       fi
       
       # Update file ownership
