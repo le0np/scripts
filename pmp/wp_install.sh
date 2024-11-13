@@ -62,6 +62,7 @@ read -p "Enter email for SSL install: " ssl_email
 
 # Create or clear the credentials.txt file
 > credentials.txt
+> letsencrypt.log
 
 # Loop through each domain
 for domain in $(cat "$domains"); do
