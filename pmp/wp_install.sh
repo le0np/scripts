@@ -103,10 +103,10 @@ for domain in $(cat "$domains"); do
       #wp theme install $theme --path="/var/www/vhosts/$domain/httpdocs/" --activate --allow-root
 
       # Install SSL certificate on www and non-www domain
-      if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrpt_log" 2>&1; then
-        echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrpt_log"
+      if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrypt_log" 2>&1; then
+        echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrypt_log"
       else
-        echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$letsencrpt_log"
+        echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$letsencrypt_log"
       fi
       
       # Update file ownership
