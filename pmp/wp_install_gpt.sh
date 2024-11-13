@@ -61,6 +61,24 @@ read -p "Enter email for SSL install: " ssl_email
 > credentials.txt
 > "$letsencrypt_log"  # Corrected to use the variable and ensure the file is created
 
+# Function to generate a valid password
+generate_password() {
+    local admin_pass special_char_count
+    while true; do
+        # Generate a password with the specified character set
+        admin_pass=$(tr -dc 'A-Za-z0-9!#$%&()*-<>?@^_~' < /dev/urandom | head -c 16)
+        
+        # Count the number of special characters
+        special_char_count=$(echo "$admin_pass" | grep -o '[!#$%&()*-<>?@^_~]' | wc -l)
+        
+        # Ensure the first character is not a special character and special characters are limited to 2-3
+        if [[ ${admin_pass:0:1} =~ [A-Za-z0-9] && $special_char_count -ge 2 && $special_char_count -le 3 ]]; then
+            echo "$admin_pass"
+            return
+        fi
+    done
+}
+
 # Loop through each domain
 for domain in $(cat "$domains"); do
   # Generate random string for the admin username
@@ -76,7 +94,10 @@ for domain in $(cat "$domains"); do
 
   # Create website subscription
   admin_user="pmp_admin_$random_string"
-  admin_pass=$(tr -dc 'A-Za-z0-9!#$%&()*-<>?@^_~' < /dev/urandom | head -c 16)
+  
+  # Generate a valid admin password using the function
+  admin_pass=$(generate_password)
+  
   title="${domain%%.*}"
   email="info@$domain"
   service_plan="Default Domain"
