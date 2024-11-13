@@ -60,7 +60,7 @@ ip=$(hostname -I | awk '{print $1}')
 db_host="localhost"
 read -p "Enter email for SSL install: " ssl_email
 
-# Create or clear the credentials.txt file
+# Create or clear the credentials.txt file and letsencrypt log file
 > credentials.txt
 > letsencrypt.log
 
