@@ -10,7 +10,7 @@
 # AUTHOR: le0np
 # DATE: 30/04/2024
 
-set -e  # Stop on errors
+#set -e  # Stop on errors
 set -x  # Print commands as they execute (for debugging)
 
 # Update packages 
