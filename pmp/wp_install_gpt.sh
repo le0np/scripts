@@ -11,7 +11,7 @@
 # DATE: 30/04/2024
 
 #set -e  # Stop on errors
-set -x  # Print commands as they execute (for debugging)
+#set -x  # Print commands as they execute (for debugging)
 
 # Update packages 
 apt update -y && apt upgrade -y
