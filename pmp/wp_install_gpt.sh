@@ -79,6 +79,9 @@ generate_password() {
     done
 }
 
+# Maximum number of retries for SSL installation
+max_retries=3
+
 # Loop through each domain
 for domain in $(cat "$domains"); do
   # Generate random string for the admin username
@@ -119,36 +122,50 @@ for domain in $(cat "$domains"); do
       # Install WordPress
       wp core install --path="/var/www/vhosts/$domain/httpdocs/" --url="https://$domain" --title="$title" --admin_user="$admin_user" --admin_password="$admin_pass" --admin_email="$email" --allow-root | tee -a credentials.txt
 
-      # Install SSL certificate on www and non-www domain
-      if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrypt_log" 2>&1; then
-        # Increment the counter for successful SSL installations
-        ssl_install_count=$((ssl_install_count + 1))
-        
-        echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrypt_log"
-        echo ""
-        
-        # Check if SSL installation count reached 100
-        if [[ $ssl_install_count -ge 100 ]]; then
-          echo "Reached 100 SSL installations. Restarting Apache and Nginx services..." | tee -a "$letsencrypt_log"
+      # Initialize SSL installation retry counter
+      ssl_retries=0
+      ssl_install_success=false
+
+      # Attempt SSL installation with retries
+      while [[ $ssl_retries -lt $max_retries && $ssl_install_success == false ]]; do
+        # Install SSL certificate on www and non-www domain
+        if plesk bin extension --exec letsencrypt cli.php -d "$domain" -d "www.$domain" -m "$ssl_email" >> "$letsencrypt_log" 2>&1; then
+          # Increment the counter for successful SSL installations
+          ssl_install_count=$((ssl_install_count + 1))
           
-          # Reset Apache and Nginx services
+          echo "SSL successfully installed for $domain and www.$domain" | tee -a "$letsencrypt_log"
+          ssl_install_success=true
+          echo ""
+        else
+          # Log the failure and retry
+          ssl_retries=$((ssl_retries + 1))
+          echo "Attempt $ssl_retries of $max_retries failed for $domain and www.$domain" | tee -a "$letsencrypt_log"
+          echo "Retrying..." | tee -a "$letsencrypt_log"
+          
+          # Restart services if retrying
           systemctl restart apache2
           systemctl restart nginx
-          
-          # Reset the counter
-          ssl_install_count=0
         fi
-      else
-        echo "FAILED TO INSTALL SSL FOR $domain and www.$domain" | tee -a "$letsencrypt_log"
+      done
+
+      # If SSL installation fails after all retries
+      if [ $ssl_install_success == false ]; then
+        echo "FAILED TO INSTALL SSL FOR $domain after $max_retries attempts" | tee -a "$letsencrypt_log"
         echo ""
-        
-        # Restart services on first failure
-        echo "Restarting Apache and Nginx due to SSL installation failure..." | tee -a "$letsencrypt_log"
+      fi
+
+      # Check if SSL installation count reached 100
+      if [[ $ssl_install_count -ge 100 ]]; then
+        echo "Reached 100 SSL installations. Restarting Apache and Nginx services..." | tee -a "$letsencrypt_log"
+
+        # Reset Apache and Nginx services
         systemctl restart apache2
         systemctl restart nginx
-        ssl_install_count=0  # Reset the counter on failure
+
+        # Reset the counter
+        ssl_install_count=0
       fi
-      
+
       # Update file ownership
       chown -R $admin_user: /var/www/vhosts/$domain/httpdocs/
       chown $admin_user:psaserv /var/www/vhosts/$domain/httpdocs/
