@@ -122,6 +122,11 @@ for domain in $(cat "$domains"); do
       # Install WordPress
       wp core install --path="/var/www/vhosts/$domain/httpdocs/" --url="https://$domain" --title="$title" --admin_user="$admin_user" --admin_password="$admin_pass" --admin_email="$email" --allow-root | tee -a credentials.txt
 
+      # Need to add randomized URL structure, something like this: 
+     #wp rewrite structure '/%category%/%postname%/' 
+     # install theme 
+     # wp theme install $theme --activate --allow-root 
+     
       # Initialize SSL installation retry counter
       ssl_retries=0
       ssl_install_success=false
