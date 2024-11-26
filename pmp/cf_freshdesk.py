@@ -144,7 +144,8 @@ def main():
     dns_records_to_add = [
         {"type": "TXT", "name": "@", "content": "v=spf1 include:mailgun.org ~all"},
         {"type": "MX", "name": "@", "content": "mxa.mailgun.org", "priority": 10},
-        {"type": "MX", "name": "@", "content": "mxb.mailgun.org", "priority": 10}
+        {"type": "MX", "name": "@", "content": "mxb.mailgun.org", "priority": 10},
+        {"type": "CNAME", "name": f"fwdkim1.{domain}", "content": "spfmx1.domainkey.freshemail.io"}
     ]
     # Get DNS records from user input
     user_dns_records = get_user_dns_records()
