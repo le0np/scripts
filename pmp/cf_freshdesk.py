@@ -2,7 +2,7 @@ import requests
 # Cloudflare API base URL
 api_base_url = "https://api.cloudflare.com/client/v4"
 # API token should be obtained from Cloudflare -> My Profile -> API Tokens (create one if it does not exist)
-api_token = "1meIiHGUvK5t0_MD3PjB_Mlu7TWVVAwlx5GAvnRx"
+api_token = "api_token"
 # Headers with authorization token
 headers = {
     "Authorization": f"Bearer {api_token}",
