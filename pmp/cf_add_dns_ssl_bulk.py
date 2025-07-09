@@ -5,7 +5,7 @@ import time
 api_base_url = "https://api.cloudflare.com/client/v4"
 
 # Your Cloudflare API token
-api_token = "1meIiHGUvK5t0_MD3PjB_Mlu7TWVVAwlx5GAvnRx"
+api_token = "api_token"
 
 # Headers with authorization token
 headers = {
